@@ -35,23 +35,7 @@
 				<li>Show Flowergirl Felli</li>
 				<li>Show Kitchenhand Tommen</li>
 			</ul> -->
-
-			
-			<!-- <hr> -->
-			<!-- <div style="float: left;">
-				<img src="" id="portrait">
-				<p>Flowerfirl Felli</p>
-			</div>
-
-			<div id="main-text">
-				<p id="greeting"></p>
-
-			</div>
-			<ul id="actions-list">
-				<li>Show Pix the Troublemaker</li>
-				<li>Show Flowergirl Felli</li>
-				<li>Show Kitchenhand Tommen</li>
-			</ul> -->
+			<!-- <router-view></router-view> -->
 		</div>
 	</div>
 	<div id="extra">
@@ -62,9 +46,15 @@
 		<button onclick="Player.savePlayer()">Save</button> 
 		<button onclick="Player.loadPlayer();">Load</button> 
 		<button onclick="Player.deletePlayer();">Clear</button>
+		<br>
+    <router-link to="/welcome">Go to welcome</router-link><br>
+    <router-link to="/area">Go to area</router-link>
 	</div>
 </div>
-	<script src="vue.js"></script>
+	<!-- <script src="vue.js"></script> -->
+	<!-- <script src="vue-router.js"></script> -->
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
 	<script src="vueStuff.js"></script>
 	<script src="script.js"></script>
 </body>

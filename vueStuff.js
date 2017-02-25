@@ -1,13 +1,19 @@
 console.log("Hello comoponent")
 
+// Defining Routes
+// const Welcome = { template: "<div>Welcome</div>" }
+// const Area = { template: "<div>Regular page</div>" }
 
-Vue.component('user-info', {
-	props: ['player'],
-	template: ''
-});
+// const routes = [
+// 	{ path: '/welcome', comoponent: Welcome },
+// 	{ path: '/area', comoponent: Area }
+// ]
+
+// const router = new VueRouter({
+// 	routes
+// })
 
 var vm = new Vue({
-	el: '#wrapper',
 	data: {
 		playerInfo: {
 			name: "Flippity Jack the Pixie",
@@ -27,7 +33,6 @@ var vm = new Vue({
 		extraInfo: {
 			quote: ''
 		},
-		data: "Dog",
 		areaInfo: {
 			npc: {},
 			actions: {},
