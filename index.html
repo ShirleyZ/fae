@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Thing</title>
+	<link rel="stylesheet" type="text/css" href="css.css">
+</head>
+<body>
+<div id="wrapper">
+	<div id="stats">
+		<ul>
+			<li>{{playerInfo.name}}</li>
+			<li>Level {{playerInfo.level}}</li>
+		</ul>
+		<br>
+		<ul>
+			<li>Charm: {{playerInfo.stat_charm}}</li>
+			<li>Deception: {{playerInfo.stat_deception}}</li>
+			<li>Magic: {{playerInfo.stat_magic}}</li>
+		</ul>
+	</div>
+	<div id="main">
+		<div id="main-textarea">
+			<div id="area-info" 
+					 class="portrait">
+				<img src="" />
+				<p class="style-caption">{{ mainInfo.imgCaption }}</p>
+			</div>
+			<div id="main-text">
+				<p v-if="mainInfo.type=='npc'" class="style-quote" id="greeting"> {{ mainInfo.greeting }} </p>
+				<p>{{ mainInfo.mainDesc }}</p>
+			</div>
+
+			<!-- <ul id="actions-list">
+				<li>Show Pix the Troublemaker</li>
+				<li>Show Flowergirl Felli</li>
+				<li>Show Kitchenhand Tommen</li>
+			</ul> -->
+
+			
+			<!-- <hr> -->
+			<!-- <div style="float: left;">
+				<img src="" id="portrait">
+				<p>Flowerfirl Felli</p>
+			</div>
+
+			<div id="main-text">
+				<p id="greeting"></p>
+
+			</div>
+			<ul id="actions-list">
+				<li>Show Pix the Troublemaker</li>
+				<li>Show Flowergirl Felli</li>
+				<li>Show Kitchenhand Tommen</li>
+			</ul> -->
+		</div>
+	</div>
+	<div id="extra">
+		<div id="extra-funfact" class="style-quote">
+			{{ extraInfo.quote }}
+		</div>
+		<br>
+		<button onclick="Player.savePlayer()">Save</button> 
+		<button onclick="Player.loadPlayer();">Load</button> 
+		<button onclick="Player.deletePlayer();">Clear</button>
+	</div>
+</div>
+	<script src="vue.js"></script>
+	<script src="vueStuff.js"></script>
+	<script src="script.js"></script>
+</body>
+</html>

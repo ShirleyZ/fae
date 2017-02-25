@@ -1,0 +1,105 @@
+/* Clearing & Resetting */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+ul, ol {
+	padding-left: 20px;
+}
+
+p {
+	margin: 10px 5px;
+}
+
+/* Global styling */
+button {
+	padding: 5px;
+	background: none;
+	border: 1px solid white;
+	min-width: 70px;
+	color: white;
+}
+
+/* Global Re-usable */
+.style-quote {
+	font-style: italic;
+}
+.style-quote:before, .style-quote:after {
+	content: '"';
+}
+
+.style-caption {
+	font-style: italic;
+	margin-top: 0;
+}
+
+/* Specific */
+
+body {
+	background-color: #2b2b2b;
+	color: white;
+}
+
+#wrapper {
+	border: 1px solid white;
+	margin: 0 auto;
+	width: 80%;
+	height: 700px;
+}
+
+#wrapper > div {
+	padding: 10px;
+}
+
+#stats, #main, #extra {
+	float: left;
+	border-right: 1px solid white; 
+}
+
+#stats {
+	width: 20%;	
+}
+
+#main {
+	width: 50%;	
+	
+}
+
+#extra {
+	width: 20%;	
+
+}
+
+#area-info {
+	float: left;
+}
+
+#area-info > p {
+	margin-left: 10px;
+}
+
+#area-info.portrait {
+ margin-right: 20px;
+}
+
+#area-info.portrait > img {
+	width: 150px;
+	height: 150px;
+	border: 1px solid white;
+	margin: 10px;
+	margin-top: 0;
+}
+
+#area-info.landscape {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+#area-info.landscape > img {
+	width: 100%;
+	height: 200px;
+	border: 1px solid white;
+	margin: 10px auto;
+	margin-top: 0;
+}
