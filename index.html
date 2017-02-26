@@ -8,7 +8,11 @@
 <div id="wrapper">
 	<div id="stats">
 		<ul>
-			<li>{{playerInfo.name}}</li>
+			<li v-if="playerInfo.name == ''">A bleary-eyed pixie</li>
+			<li v-if="playerInfo.name != ''">
+				<span v-if="playerInfo.title">{{playerInfo.title}} </span>
+				{{playerInfo.name}} {{playerInfo.race}}
+			</li>
 			<li>Level {{playerInfo.level}}</li>
 		</ul>
 		<br>
@@ -28,6 +32,21 @@
 			<div id="main-text">
 				<p v-if="mainInfo.type=='npc'" class="style-quote" id="greeting"> {{ mainInfo.greeting }} </p>
 				<p>{{ mainInfo.mainDesc }}</p>
+
+				<div id="welcome" v-if="displayOptions.values.welcome">
+					<form id="welcome-form">
+						<input type="text" name="playerName">
+						<button onclick="Game.saveForm('welcome-form')">That's me</button>
+					</form>
+				</div>
+				<div id="shop" v-if="displayOptions.values.shop">
+
+				</div>
+				<div id="chat" v-if="displayOptions.values.chat">
+					<ul>
+						<!-- <li v-for="act in actions"><a onclick="Game.doAction()">{{act.text}}</a></li> -->
+					</ul>
+				</div>
 			</div>
 
 			<!-- <ul id="actions-list">
@@ -47,15 +66,25 @@
 		<button onclick="Player.loadPlayer();">Load</button> 
 		<button onclick="Player.deletePlayer();">Clear</button>
 		<br>
-    <router-link to="/welcome">Go to welcome</router-link><br>
-    <router-link to="/area">Go to area</router-link>
+		<button onclick="vm.displayOptions.show('welcome')">Welcome</button> 
+		<button onclick="vm.displayOptions.show('shop')">Shop</button> 
+		<button onclick="vm.displayOptions.show('chat')">Chat</button> 
+		<br>
+		<button onclick="Screen.changeNpc('felli')">Felli</button> 
+		<button onclick="Screen.changeNpc('teak')">Teak</button> 
+		<button onclick="Screen.changeNpc('pix')">Pix</button> 
+		<br>
+    <!-- <router-link to="/welcome">Go to welcome</router-link><br> -->
+    <!-- <router-link to="/area">Go to area</router-link> -->
 	</div>
 </div>
-	<!-- <script src="vue.js"></script> -->
+	<script src="vue.js"></script>
 	<!-- <script src="vue-router.js"></script> -->
-	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
 	<!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
 	<script src="vueStuff.js"></script>
+	<script src="npc.js"></script>
+	<script src="quests.js"></script>
 	<script src="script.js"></script>
 </body>
 </html>

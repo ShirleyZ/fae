@@ -1,0 +1,7 @@
+// **** DIALOGUE ****
+
+{
+	linkText: "",
+	mainText: "",
+	
+}

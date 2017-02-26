@@ -5,8 +5,8 @@ console.log("Hello comoponent")
 // const Area = { template: "<div>Regular page</div>" }
 
 // const routes = [
-// 	{ path: '/welcome', comoponent: Welcome },
-// 	{ path: '/area', comoponent: Area }
+// 	{ path: '/welcome', component: Welcome },
+// 	{ path: '/area', component: Area }
 // ]
 
 // const router = new VueRouter({
@@ -37,8 +37,20 @@ var vm = new Vue({
 			npc: {},
 			actions: {},
 			desc: ""
+		},
+		displayOptions: {
+			show: function(showThis) {
+				for (var key in vm.displayOptions.values) {
+					vm.displayOptions.values[key] = false;
+					vm.displayOptions.values[showThis] = true;
+				}
+			},
+			values: {
+				welcome: false,
+				shop: false
+			}
 		}
 	}
-})
+}).$mount('#wrapper')
 
 

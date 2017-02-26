@@ -57,19 +57,37 @@ body {
 	border-right: 1px solid white; 
 }
 
-#stats {
-	width: 20%;	
+@media screen and (max-width: 1199px) {
+	#main, #extra {
+		border: 0px;
+	}
+	#stats {
+		width: 20%;	
+		height: 100%;
+	}
+	#main {
+		width: 70%;	
+	}
+	#extra {
+		width: 70%;	
+		border-top: 1px solid white;
+	}	
 }
 
-#main {
-	width: 50%;	
-	
+@media screen and (min-width: 1200px) {
+	#stats {
+		width: 20%;	
+	}
+
+	#main {
+		width: 50%;	
+	}
+
+	#extra {
+		width: 20%;	
+	}	
 }
 
-#extra {
-	width: 20%;	
-
-}
 
 #area-info {
 	float: left;
