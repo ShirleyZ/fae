@@ -47,7 +47,10 @@ var vm = new Vue({
 			},
 			values: {
 				welcome: false,
-				shop: false
+				shop: false,
+				chat: false,
+				quest: false,
+				inventory: false
 			}
 		}
 	}

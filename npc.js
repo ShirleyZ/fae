@@ -6,7 +6,8 @@ Npc = {
 		port: "",
 		extra: ["Always seen skulking around in the shadows, if something's gone wrong it's probably pix",
 						"Pix is short for 'Pixie', and no one knows Pix's real name since they guard their secrets so closely."],
-		greeting: "You didn't see me here, right pal?"
+		greeting: "You didn't see me here, right pal?",
+		quests: ["pix-quest1"]
 	},
 	"felli": {
 		name: "Flowergirl Felli",

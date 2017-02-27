@@ -46,6 +46,7 @@ body {
 	margin: 0 auto;
 	width: 80%;
 	height: 700px;
+	overflow: hidden;
 }
 
 #wrapper > div {
@@ -55,6 +56,9 @@ body {
 #stats, #main, #extra {
 	float: left;
 	border-right: 1px solid white; 
+}
+#extra {
+	border: none;
 }
 
 @media screen and (max-width: 1199px) {
@@ -77,14 +81,17 @@ body {
 @media screen and (min-width: 1200px) {
 	#stats {
 		width: 20%;	
+		height: 100%;
 	}
 
 	#main {
 		width: 50%;	
+		height: 100%;
 	}
 
 	#extra {
 		width: 20%;	
+		height: 100%;
 	}	
 }
 
