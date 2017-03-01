@@ -4,6 +4,7 @@
  * - quests.js
  * - items.js
  * - npc.js
+ test because i swear to fucking god
  */
 
 function activate() {
