@@ -65,6 +65,9 @@
 					<ul>
 						<li v-for="item in playerInfo.inventory">
 							{{Items[item].name}}
+							<span v-if="Items[item].type == 'equipment'">
+								<button v-on:click="equipItem(item)">Equip</button>
+							</span>
 						</li>
 					</ul>
 				</div>
@@ -88,11 +91,11 @@
 		<button onclick="Player.loadPlayer();">Load</button> 
 		<button onclick="Player.deletePlayer();">Clear</button>
 		<br>
-		<button onclick="vm.displayOptions.show('welcome')">Welcome</button> 
-		<button onclick="vm.displayOptions.show('shop')">Shop</button> 
-		<button onclick="vm.displayOptions.show('chat')">Chat</button> 
-		<button onclick="vm.displayOptions.show('quest')">quest</button> 
-		<button onclick="vm.displayOptions.show('inventory')">inventory</button> 
+		<button onclick="vm.changeScreenMode('welcome')">Welcome</button> 
+		<button onclick="vm.changeScreenMode('shop')">Shop</button> 
+		<button onclick="vm.changeScreenMode('chat')">Chat</button> 
+		<button onclick="vm.changeScreenMode('quest')">quest</button> 
+		<button onclick="vm.changeScreen('inventory')">inventory</button> 
 		<br>
 		<button onclick="Screen.changeNpc('felli')">Felli</button> 
 		<button onclick="Screen.changeNpc('teak')">Teak</button> 

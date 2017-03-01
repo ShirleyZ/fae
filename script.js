@@ -11,6 +11,9 @@ function activate() {
 	Game.initialise();
 	
 	vm.doAction = Game.doAction;
+	vm.equipItem = Player.equipItem;
+	vm.changeScreen = Screen.changeScreen;
+	vm.changeScreenMode = Screen.changeScreenMode;
 }
 
 
@@ -26,6 +29,7 @@ Screen = {
 		vm.mainInfo.type = "npc";
 		vm.mainInfo.imgCaption = npcInfo.name;
 		vm.mainInfo.greeting = npcInfo.greeting;
+		vm.mainInfo.mainDesc = "";
 		vm.extraInfo.quote = npcInfo.extra[0];
 		vm.displayOptions.show("chat");
 
@@ -38,10 +42,14 @@ Screen = {
 		console.log("=== Main: Changing scene to "+sceneName)
 		
 	},
-	changeScreen: function(screenName) {
+	changeScreenMode: function(screenName) {
 		console.log("=== Main: Changing screen to "+screenName)
 		vm.displayOptions.show(screenName);
 		vm.mainInfo.mainDesc = ""
+		
+	},
+	changeScreen: function(screenName) {
+		console.log("=== Main: Changing screen to "+screenName)
 		vm.mainInfo.greeting = ""
 	}
 }
@@ -58,7 +66,43 @@ Game = {
 	saveForm: function(formName) {
 		var formInfo = document.getElementById(formName);
 		var formData = new FormData(formInfo);
+		console.log("formData");
 		console.log(formData);
+	},
+	giveItemsFromList: function(list, listName, pQuestInfo) {
+		var gettin = "";
+		for (var j = 0; j < list.length; j++) {
+			gettin = list[j];
+
+			if (gettin.type == "item") {
+				Player.getItem(gettin.item);
+				var newEvent = {
+					type: "item_get",
+					item: gettin.item,
+					src: "giveItemsFromList"
+				}
+
+				if (gettin.label) {
+					newEvent.label = gettin.label;
+				} else {
+					newEvent.label = "You received "+ Items[gettin.item].name;
+				}
+
+				vm.pageEvents.push(newEvent);
+			} else if (gettin.type == "xp") {
+				Player.getXp(gettin.amount);
+				vm.pageEvents.push({
+					type: "xp_get",
+					amount: gettin.amount,
+					label: "You received "+gettin.amount+" xp!",
+					src: "giveItemsFromList"
+				})
+			}
+
+		}
+		pQuestInfo.get[listName] = true;
+		console.log("Push evenets for list: "+listName);
+		console.log(vm.pageEvents)
 	},
 	doAction: function(qName, qAction, qStage, param1) {
 		console.log("=== "+qAction+" "+qName+" stage: "+qStage);
@@ -88,35 +132,10 @@ Game = {
 					stage: qStage
 				}
 				console.log(playerObj.quests_active[qName])
+			} else if (qAction == "progress") {
+				console.log("Progressing");
+				playerObj.quests_active[qName].stage = qStage;
 			}
-
-			// - Calculating if player needs to get any items
-			var pQuestInfo = playerObj.quests_active[qName];
-			if (questNode.stageGet && !(pQuestInfo.stageGet)) {
-				for (var j = 0; j < questNode.stageGet.length; j++) {
-					var gettin = questNode.stageGet[j];
-					if (gettin.type == "item") {
-						Player.getItem(gettin.item);
-						vm.pageEvents.push({
-							type: "item_get",
-							item: gettin.item,
-							label: gettin.label
-						})
-					} else if (getting.type == "xp") {
-						Player.getXp(gettin.amount);
-						vm.pageEvents.push({
-							type: "xp_get",
-							amount: gettin.amount
-						})
-					}
-				}
-
-				pQuestInfo.stageGet = true;
-			}
-
-			// Change screen stuff
-			vm.mainInfo.mainDesc = questNode.textDesc;
-			vm.displayOptions.show('quest');
 
 			// Calculate stuff
 			var nextStage = true;
@@ -129,10 +148,29 @@ Game = {
 							nextStage = false;
 						}
 					} else if (cond.type == "item") {
-
+						nextStage = false;
 					}
 				}
 			}
+
+			// - Calculating if player needs to get any items
+			var pQuestInfo = playerObj.quests_active[qName];
+			if (pQuestInfo.get == undefined) {
+				pQuestInfo.get = {};
+			}
+
+			if (questNode.stageGet && !(pQuestInfo.get.stageGet)) {
+				Game.giveItemsFromList(questNode.stageGet, "stageGet", pQuestInfo);
+			}
+
+			// - Calculating if player gets any rewards
+			if (nextStage && questNode.passRewards && !(pQuestInfo.get.passRewards)) {
+				Game.giveItemsFromList(questNode.passRewards, "passRewards", pQuestInfo)
+			}
+
+			// Change screen stuff
+			vm.mainInfo.mainDesc = questNode.textDesc;
+			vm.displayOptions.show('quest');
 
 			var newAction = {}
 			if (nextStage) {
@@ -154,6 +192,7 @@ Game = {
 				}
 			}
 			vm.questActions.push(newAction)
+			console.log("vm.questActions")
 			console.log(vm.questActions)
 		}
 		
@@ -163,10 +202,10 @@ Game = {
 		vm.actions = [];
 		// Look through quests
 		// Check which page you're on
-		if (vm.mainInfo.type == "npc" && Game.currScene != undefined) {
+		if (vm.mainInfo.type == "npc" && 
+			  Game.currScene != undefined) {
 			console.log("[NPC] "+Game.currScene)
 			var currNpc = Npc[Game.currScene];
-			console.log(currNpc);
 			var playerObj = Player.getInfo();
 			var npcQuests = currNpc.quests;
 			console.log(npcQuests);
@@ -180,7 +219,7 @@ Game = {
 						var stageType = "";
 						// Check if quest is in progress
 						if (playerObj.quests_active[npcQuests[i]] != undefined) {
-							console.log("Quest in progress.")
+							// console.log("Quest in progress.")
 							stageType = "progress";
 							var playerQuestStage = playerObj.quests_active[npcQuests[i]].stage;
 							if (playerQuestStage == undefined) {
@@ -188,9 +227,9 @@ Game = {
 								break;								
 							}
 							var questNode = currQuest.stages[playerQuestStage];
-							console.log(questNode);
+							// console.log(questNode);
 
-							console.log("Adding to action list")
+							// console.log("Adding to action list")
 							var newAction = {
 								name: npcQuests[i],
 								action: stageType,
@@ -199,14 +238,14 @@ Game = {
 							}
 							vm.actions.push(newAction)
 						} else {
-							console.log("Unstarted quest. Checking prereqs")
+							// console.log("Unstarted quest. Checking prereqs")
 							stageType = "start";
 							// Check if you can start this quest
 							// Set to true and if anything fails you can't start
 							var passPrereqs = true;
 
 							if (currQuest.prerequisites.length == 0) {
-								console.log("No requisites. Free pass");
+								// console.log("No requisites. Free pass");
 							} else {
 								for (var j = 0; j < currQuest.prerequisites.length; j++) {
 									var prereq = currQuest.prerequisites[j]; 
@@ -216,7 +255,7 @@ Game = {
 											passPrereqs = false;
 										}
 									} else {
-										console.log("Unrecognised prereq, please check data")
+										// console.log("Unrecognised prereq, please check data")
 										passPrereqs = false;
 									}
 								}	
@@ -337,9 +376,32 @@ Player = {
 			}
 		}
 
-		vm.pageEvents.push({
-			type: "level"
-		})
+		if (i > 0) {
+			var newEvent = {
+				type: "level"
+			};
+
+			if (i == 1) {
+				newEvent.label = "You gained a level";
+			} else if (i > 0) {
+				newEvent.label = "You gained "+i+" levels";
+			}
+			vm.pageEvents.push(newEvent);
+		}
+		
+	},
+	equipItem: function(itemName) {
+		var itemIndex = vm.playerInfo.inventory.indexOf(itemName);
+		var successfulEquip = false;
+		// Equip only if player has item
+		if (itemIndex != -1) {
+			vm.playerInfo.inventory.splice(itemIndex, 1);
+			var slot = itemName.split("_")[0];
+			vm.playerInfo.equipment[slot] = itemName;	
+			successfulEquip = true;
+		}
+		
+		return successfulEquip;
 	}
 }
 

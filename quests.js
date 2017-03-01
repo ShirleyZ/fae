@@ -55,8 +55,14 @@ Quests = {
 						amount: 20
 					}
 				],
-				textPass: "Ooh is that 20 apples I see? Hand 'em over!",
-				textNotPass: "You can find apples in the apple grove.",
+				textNodePass: {
+					label: "Ooh is that 20 apples I see? Hand 'em over!",
+					action: "progress"
+				},
+				textNodeNotPass: {
+					label: "You can find apples in the apple grove.",
+					action: "none"
+				},
 				passRewards: [
 					{
 						type: 'xp',
