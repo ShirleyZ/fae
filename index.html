@@ -6,7 +6,10 @@
 </head>
 <body>
 <div id="wrapper">
-	<div id="stats">
+	<div id="navbar">
+		
+	</div>
+	<div id="sect-stats">
 		<ul>
 			<li v-if="playerInfo.name == ''">A bleary-eyed pixie</li>
 			<li v-if="playerInfo.name != ''">
@@ -14,6 +17,7 @@
 				{{playerInfo.name}} {{playerInfo.race}}
 			</li>
 			<li>Level {{playerInfo.level}}</li>
+			<li>XP: {{playerInfo.currXp}}/{{playerInfo.totalXp}}</li>
 		</ul>
 		<br>
 		<ul>
@@ -21,11 +25,19 @@
 			<li>Deception: {{playerInfo.stat_deception}}</li>
 			<li>Magic: {{playerInfo.stat_magic}}</li>
 		</ul>
+		<br>
+		Active Quests:
+		<ul>
+			<li v-for="(questInfo, questKey) in playerInfo.quests_active">
+				{{Quests[questKey].questName}}
+			</li>
+		</ul>
 	</div>
-	<div id="main">
+	<div id="sect-main">
 		<div id="main-textarea">
 			<div id="area-info" 
-					 class="portrait">
+					 class="portrait"
+					 v-if="mainInfo.type == 'npc'">
 				<img src="" />
 				<p class="style-caption">{{ mainInfo.imgCaption }}</p>
 			</div>
@@ -39,50 +51,57 @@
 					</ul>
 				</div>
 
-				<div id="welcome" v-if="displayOptions.values.welcome">
+				<div id="tab-welcome" v-if="displayOptions.values.welcome">
 					<form id="welcome-form">
 						<input type="text" name="playerName">
 						<button onclick="Game.saveForm('welcome-form')">That's me</button>
 					</form>
 				</div>
-				<div id="shop" v-if="displayOptions.values.shop">
+				<div id="tab-shop" v-if="displayOptions.values.shop">
 
 				</div>
-				<div id="quest" v-if="displayOptions.values.quest">
+				<div id="tab-quest" v-if="displayOptions.values.quest">
 					<ul>
 						<li v-for="qAct in questActions">
 								<a class="page-action" v-on:click="doAction(qAct.name, qAct.action, qAct.stage, qAct.param1)">{{qAct.label}}</a>
 						</li>
 					</ul>
 				</div>
-				<div id="chat" v-if="displayOptions.values.chat">
+				<div id="tab-chat" v-if="displayOptions.values.chat">
 					<ul>
 						<li v-for="act in actions"><a v-on:click="doAction(act.name, act.action, act.stage)">{{act.label}}</a></li>
 					</ul>
 				</div>
-				<div id="inventory" v-if="displayOptions.values.inventory">
-					Hi this is the inventory
-					<ul>
-						<li v-for="item in playerInfo.inventory">
-							{{Items[item].name}}
-							<span v-if="Items[item].type == 'equipment'">
-								<button v-on:click="equipItem(item)">Equip</button>
-							</span>
-						</li>
-					</ul>
+				<div id="tab-inventory" v-if="displayOptions.values.inventory">
+					<div id="inventory-equipment">
+						<p>Equipment</p>
+						<ul>
+							<li v-for="(slotInfo, slotName) in playerInfo.equipment">
+								{{Labels[slotName]}}: 
+								<span v-if="slotInfo != ''">{{Items[slotInfo].name}}</span>
+								<span v-else>None</span>
+							</li>
+						</ul>
+					</div>
+					<div id="inventory-itemsList">
+						<p>
+							Inventory
+						</p>
+						<ul>
+							<li v-if="playerInfo.inventory.length == 0">You don't have anything in your inventory</li>
+							<li v-for="item in playerInfo.inventory">
+								{{Items[item].name}}
+								<span v-if="Items[item].type == 'equipment'">
+									<button v-on:click="equipItem(item)">Equip</button>
+								</span>
+							</li>
+						</ul>
+					</div>
 				</div>
-
 			</div>
-
-			<!-- <ul id="actions-list">
-				<li>Show Pix the Troublemaker</li>
-				<li>Show Flowergirl Felli</li>
-				<li>Show Kitchenhand Tommen</li>
-			</ul> -->
-			<!-- <router-view></router-view> -->
 		</div>
 	</div>
-	<div id="extra">
+	<div id="sect-extra">
 		<div id="extra-funfact" class="style-quote">
 			{{ extraInfo.quote }}
 		</div>
@@ -95,6 +114,7 @@
 		<button onclick="vm.changeScreenMode('shop')">Shop</button> 
 		<button onclick="vm.changeScreenMode('chat')">Chat</button> 
 		<button onclick="vm.changeScreenMode('quest')">quest</button> 
+		<br>
 		<button onclick="vm.changeScreen('inventory')">inventory</button> 
 		<br>
 		<button onclick="Screen.changeNpc('felli')">Felli</button> 
@@ -112,7 +132,9 @@
 	<script src="vueStuff.js"></script>
 	<script src="items.js"></script>
 	<script src="npc.js"></script>
+	<script src="player.js"></script>
 	<script src="quests.js"></script>
+	<script src="labels.js"></script>
 	<script src="script.js"></script>
 </body>
 </html>

@@ -1,4 +1,72 @@
 // **** QUESTS ****
+/* Dependencies:
+ * - player.js
+ */
+
+QuestsUtil = {
+	getQuestLabel: function(questName) {
+		return Quests[questName].questName;
+	},
+	getStageInfo: function(questName, stage) {
+		return Quests[questName].stages[stage];
+	},
+	getQuestStartLabel: function(questName) {
+		return Quests[questName].startQuestText;
+	},
+	checkPrereqs: function(questName, playerObj) {
+		/* Checks the prerequisites of quest to see if player
+		 * is able to start it */
+		console.log("=== Checking quest prereqs for "+questName);
+		// console.log(playerObj);
+		var currQuest = Quests[questName];
+		var passPrereqs = true;
+		if (currQuest.prerequisites.length == 0) {
+			// console.log("No requisites. Free pass");
+		} else {
+			// console.log("Iterating through prereq")
+			for (var j = 0; j < currQuest.prerequisites.length; j++) {
+				var prereq = currQuest.prerequisites[j]; 
+				passPrereqs = QuestsUtil.checkCondListHelper(prereq, playerObj);
+			}	
+		}
+		return passPrereqs;
+	},
+	checkPassConditions: function(questName, playerObj, stage) {
+		/* Checks the pass conditions of a stage, to see if player
+		 * can progress to the next stage */
+		var nextStage = true;
+		var questNode = QuestsUtil.getStageInfo(questName, stage);
+		if (questNode.passConditions) {
+			for (var i = 0; i < questNode.passConditions.length; i++) {
+				var cond = questNode.passConditions[i];
+				// Player needs to wear certain equipment
+				if (cond.type == "equipment") {
+					if (!Player.isEquipping(cond.item)) {
+						nextStage = false;
+					}
+				} else if (cond.type == "item") {
+					nextStage = false;
+				}
+			}
+		}
+		return nextStage;
+	},
+	checkCondListHelper: function(condition, playerObj) {
+		/* Helper util used to check different types of conditions for
+		 * passConditions, quest prereqs, etc */
+		var passPrereqs = true;
+		if (condition.type == "quest" && condition.state == "completed") {
+			if (playerObj.quests_completed.indexOf(condition.name) == -1) {
+				// console.log("Not completed");
+				passPrereqs = false;
+			}
+		} else {
+			// console.log("Unrecognised condition, please check data")
+			passPrereqs = false;
+		}
+		return passPrereqs;
+	}
+}
 
 Quests = {
 	"teak-intro1": {

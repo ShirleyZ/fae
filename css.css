@@ -53,43 +53,49 @@ body {
 	padding: 10px;
 }
 
-#stats, #main, #extra {
+#sect-stats, #sect-main, #sect-extra {
 	float: left;
 	border-right: 1px solid white; 
 }
-#extra {
+#sect-extra {
 	border: none;
 }
 
+#inventory-equipment, #inventory-itemsList {
+	float: left;
+	padding: 5px;
+	margin: 5px;
+}
+
 @media screen and (max-width: 1199px) {
-	#main, #extra {
+	#sect-main, #sect-extra {
 		border: 0px;
 	}
-	#stats {
+	#sect-stats {
 		width: 20%;	
 		height: 100%;
 	}
-	#main {
+	#sect-main {
 		width: 70%;	
 	}
-	#extra {
+	#sect-extra {
 		width: 70%;	
 		border-top: 1px solid white;
 	}	
 }
 
 @media screen and (min-width: 1200px) {
-	#stats {
+	#sect-stats {
 		width: 20%;	
 		height: 100%;
 	}
 
-	#main {
+	#sect-main {
 		width: 50%;	
 		height: 100%;
 	}
 
-	#extra {
+	#sect-extra {
 		width: 20%;	
 		height: 100%;
 	}	
