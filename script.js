@@ -4,17 +4,21 @@
  * - quests.js
  * - items.js
  * - npc.js
- test because i swear to fucking god
  */
 
 function activate() {
 	console.log("=== Activate");
 	vm.pageEvents = [];
+	vm.forms = {
+		welcome: {}
+	}
+
 	vm.Items = Items;
 	vm.Labels = Labels;
 	vm.Quests = Quests;
 
 	Screen.changeNpc("felli");
+	console.log("init");
 	Game.initialise();
 	
 	vm.doAction = Game.doAction;
@@ -49,10 +53,14 @@ Screen = {
 		console.log("=== Main: Changing scene to "+sceneName)
 		
 	},
-	changeScreenMode: function(screenName) {
+	changeScreenMode: function(screenName, mainDesc) {
 		console.log("=== Main: Changing screen to "+screenName)
 		vm.displayOptions.show(screenName);
-		vm.mainInfo.mainDesc = "";
+		if (mainDesc) {
+			vm.mainInfo.mainDesc = mainDesc;
+		} else {
+			vm.mainInfo.mainDesc = "";
+		}
 	},
 	changeScreen: function(screenName) {
 		console.log("=== Main: Changing screen to "+screenName)
@@ -61,6 +69,17 @@ Screen = {
 		vm.mainInfo.type = screenName;
 		vm.displayOptions.show(screenName);
 		vm.actions = [];
+		vm.pageEvents = [];
+
+		// If we're going back to the map
+		if (screenName == "map") {
+			if (Game.currScene == undefined) {
+				// um?
+				Screen.changeNpc('felli');
+			} else {
+				Screen.changeNpc(Game.currScene);
+			}
+ 		}
 	}
 }
 
@@ -74,10 +93,15 @@ Game = {
 		}
 	},
 	saveForm: function(formName) {
-		var formInfo = document.getElementById(formName);
-		var formData = new FormData(formInfo);
+		var formData = vm.forms[formName];
 		console.log("formData");
 		console.log(formData);
+		if (formName == "welcome") {
+			Player.setName(formData.playerName);
+			var mainDesc = "Steady on your feet now, dear. Waking is always a disorienting experience.";
+			Screen.changeScreenMode('chat', mainDesc);
+
+		}
 	},
 	giveItemsFromList: function(list, listName, pQuestInfo) {
 		var gettin = "";
@@ -149,19 +173,6 @@ Game = {
 
 			// Calculate stuff
 			var nextStage = QuestsUtil.checkPassConditions(qName, playerObj, qStage);
-			// if (questNode.passConditions) {
-			// 	for (var i = 0; i < questNode.passConditions.length; i++) {
-			// 		var cond = questNode.passConditions[i];
-			// 		// Player needs to wear certain equipment
-			// 		if (cond.type == "equipment") {
-			// 			if (!Player.isEquipping(cond.item)) {
-			// 				nextStage = false;
-			// 			}
-			// 		} else if (cond.type == "item") {
-			// 			nextStage = false;
-			// 		}
-			// 	}
-			// }
 
 			// - Calculating if player needs to get any items
 			var pQuestInfo = playerObj.quests_active[qName];

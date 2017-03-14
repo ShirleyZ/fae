@@ -52,7 +52,8 @@ var vm = new Vue({
 				quest: false,
 				inventory: false
 			}
-		}
+		},
+		pageEvents: []
 	}
 }).$mount('#wrapper')
 

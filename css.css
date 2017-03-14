@@ -34,6 +34,16 @@ button {
 	margin-top: 0;
 }
 
+.page-events ul {
+	list-style: none;
+}
+
+.page-events li {
+	padding: 10px 15px;
+	margin: 5px;
+	border: 1px solid white;
+}
+
 /* Specific */
 
 body {

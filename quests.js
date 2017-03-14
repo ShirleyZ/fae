@@ -75,7 +75,7 @@ Quests = {
 		startQuestText: "You look like you need a few pointers, how about it?",
 		stages: [
 			{
-				textDesc: "First let's do something about the fact that you're stark naked, can't possibly be comfortable in this chill. Here, put these one. I've always got a set of spares with me.",
+				textDesc: "First let's do something about the fact that you're stark naked. You can't possibly be comfortable in this chill. Here, put this on. I've always got a set of spares with me.",
 				textLabel: "Dressed yourself yet?",
 				passConditions: [
 					{
@@ -116,6 +116,7 @@ Quests = {
 			},
 			{
 				textDesc: "Excellent! I've given you some leggings and shoes too. Go ahead and put them on. Now, here's lesson number two: 'Nothing comes free in this world!' <i>Teak gives a wicked grin, and you suddenly notice all her sharp teeth</i> Some fairies will ask little of you, and some more. Luckily for you, I'm a generous soul. So I think 20 apples should settle the deal.",
+				textLabel: "Fetched those apples yet?",
 				passConditions: [
 					{
 						type: 'item',

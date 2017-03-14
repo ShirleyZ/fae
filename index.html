@@ -7,7 +7,14 @@
 <body>
 <div id="wrapper">
 	<div id="navbar">
-		
+		<ul>
+			<li>
+				<button onclick="vm.changeScreen('inventory')">inventory</button> 
+			</li>
+			<li>
+				<button onclick="vm.changeScreen('map')">map</button> 
+			</li>
+		</ul>
 	</div>
 	<div id="sect-stats">
 		<ul>
@@ -52,10 +59,10 @@
 				</div>
 
 				<div id="tab-welcome" v-if="displayOptions.values.welcome">
-					<form id="welcome-form">
-						<input type="text" name="playerName">
-						<button onclick="Game.saveForm('welcome-form')">That's me</button>
-					</form>
+					<div id="welcome-form">
+						<input type="text" name="playerName" v-model="forms.welcome.playerName">
+						<button onclick="Game.saveForm('welcome')">That's me</button>
+					</div>
 				</div>
 				<div id="tab-shop" v-if="displayOptions.values.shop">
 

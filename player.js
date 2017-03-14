@@ -1,4 +1,7 @@
 // **** PLAYER ****
+/* Dependencies:
+ * - screen.js
+ */
 
 Player = {
 	newPlayer: {
@@ -53,7 +56,12 @@ Player = {
 	},
 	deletePlayer: function() {
 		localStorage.removeItem("player_data");
-		Player.initialise();
+		Player.initPlayer();
+	},
+	initPlayer: function() {
+		vm.playerInfo = Player.newPlayer;
+		Player.savePlayer;
+
 	},
 	welcomePlayer: function() {
 		console.log("=== Welcoming player");

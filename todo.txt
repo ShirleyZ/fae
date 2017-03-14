@@ -1,0 +1,3 @@
+todo
+[ ] passrewards
+[ ] remove items in doaction to pass things
