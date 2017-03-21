@@ -56,7 +56,7 @@
 
 				<div id="npc-info" v-if="mainInfo.type=='npc'">
 					<p v-if="mainInfo.type=='npc'" class="style-quote" id="greeting"> {{ mainInfo.greeting }} </p>
-					<p>{{ mainInfo.mainDesc }}</p>
+					<p v-html="mainInfo.mainDesc"></p>
 				</div>
 				
 				<div id="map-info" v-if="mainInfo.type=='map'">
@@ -67,8 +67,7 @@
 
 				<div class="page-events" v-if="(pageEvents) && (pageEvents.length != 0)">
 					<ul>
-						<!-- <li v-for="event in pageEvents" v-html="event.label"></li> -->
-						<li v-for="event in pageEvents">{{event.label}}</li>
+						<li v-for="event in pageEvents" v-html="event.label"></li>
 					</ul>
 				</div>
 
