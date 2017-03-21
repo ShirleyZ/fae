@@ -23,7 +23,7 @@
  				reqs: [false]
  			}
 		],
-		nodes: ["grove-apple"],
+		nodes: ["grove-apple", "river-small", "pond-small"],
 		exits: ["garden-1"],
 		reqs: []
  	},
@@ -52,6 +52,12 @@
 
  Nodes = {
  	"grove-apple": {
+
+ 	},
+ 	"river-small": {
+
+ 	},
+ 	"pond-small": {
 
  	},
  	"garden-mix-1": {

@@ -6,6 +6,14 @@ NpcUtil = {
 		var max = npcInfo.extra.length;
 		var min = 0;
 		var randInt = Math.random() * (max - min) + min;
+		randInt = Math.floor(randInt);
+		// If it's num of length it's out of bounds
+		// Accounts for small chance it lands perfectly on max
+		if (randInt == max) {
+			randInt-=1;
+		}
+		console.log("Num betw: "+min+ " - "+max);
+		console.log(randInt);
 		return npcInfo.extra[randInt];
 	}
 }
