@@ -85,7 +85,7 @@ Quests = {
 				],
 				textNodePass: {
 					label: "There, don't you feel better now?",
-					action: "progress"
+					action: "quest-progress"
 				},
 				textNodeNotPass: {
 					label: "You can equip items from your inventory page.",
@@ -126,7 +126,7 @@ Quests = {
 				],
 				textNodePass: {
 					label: "Ooh is that 20 apples I see? Hand 'em over!",
-					action: "progress"
+					action: "quest-progress"
 				},
 				textNodeNotPass: {
 					label: "You can find apples in the apple grove.",

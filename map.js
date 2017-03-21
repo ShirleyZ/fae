@@ -1,5 +1,9 @@
-// **** MAP ****
-/* Dependencies:
+// **** MAP & NODES ****
+/* 
+ * NOTES:
+ * - npc requirements are here instead of npc.js because it allows npcs to be in multiple
+ *   maps w/ custom reqs
+ * Dependencies:
  * - none
  */
 

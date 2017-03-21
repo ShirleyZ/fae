@@ -1,0 +1,26 @@
+=== Architecture documentation or smth
+
+=== INDEX
+1. PAGE ACTIONS
+
+
+
+=== 1. PAGE ACTIONS
+1.1 Page action overview
+
+So, basically you create a list of objects which hold the available 
+actions for that page. Follow some basic structure so that a variety
+of actions can be displayed/saved/parsed in the same way
+
+1.2 Action object structure
+
+Action objects have the following properties.
+<*> are mandatory
+<?> are optional/conditional
+
+* name: the info used for lookup, quest/npc/map name
+* action: what type of action this is, quest progression, map change
+* label: the text that gets displayed for the dot point on the page
+
+? stage: used for quests, indicates which quest stage to go to
+

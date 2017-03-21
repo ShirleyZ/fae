@@ -54,17 +54,23 @@
 		<div id="main-textarea">
 			<div id="main-text">
 
+				<div id="map-info" v-if="mainInfo.type=='map'">
+					<p>{{ mapInfo.name }}</p>
+					<p>{{ mapInfo.desc }}</p>
+					<p v-html="mapInfo.nodes"></p>
+					<ul>
+						<li v-for="npcAct in mapInfo.npcs">
+							<a v-on:click="doAction(npcAct.name, npcAct.action)">{{npcAct.label}}</a>
+						</li>
+					</ul>
+				</div>
+
 				<div id="npc-info" v-if="mainInfo.type=='npc'">
 					<p v-if="mainInfo.type=='npc'" class="style-quote" id="greeting"> {{ mainInfo.greeting }} </p>
 					<p v-html="mainInfo.mainDesc"></p>
 				</div>
-				
-				<div id="map-info" v-if="mainInfo.type=='map'">
-					<p>{{ mapInfo.name }}</p>
-					<p>{{ mapInfo.desc }}</p>
-					<p></p>
-				</div>
 
+				<!-- Todo: Pull this out into a component -->
 				<div class="page-events" v-if="(pageEvents) && (pageEvents.length != 0)">
 					<ul>
 						<li v-for="event in pageEvents" v-html="event.label"></li>
@@ -118,7 +124,7 @@
 						</ul>
 					</div>
 				</div> <!-- End Inventory Tab -->
-				<!-- <div>
+				<div style="display: none">
 					<p>
 							You see 
 							<span style="color: #da464a;">an apple tree</span>, 
@@ -129,7 +135,7 @@
 						<li>[NPC] Tree Guardian Teak</li>
 						<li>[NPC] Tree Guardian Willow</li>
 					</ul>
-				</div> -->
+				</div>
 			</div>
 		</div>
 	</div>
@@ -166,6 +172,7 @@
 	<script src="map.js"></script>
 	<script src="npc.js"></script>
 	<script src="player.js"></script>
+	<script src="util-actions.js"></script>
 	<script src="quests.js"></script>
 	<script src="labels.js"></script>
 	<script src="script.js"></script>

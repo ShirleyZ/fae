@@ -28,7 +28,9 @@ var vm = new Vue({
 		mapInfo: {
 			name: '',
 			desc: '',
-			quote: ''
+			quote: '',
+			npcs: [],
+			nodes: []
 		},
 		mainInfo: {
 			type: 'npc',

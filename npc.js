@@ -15,6 +15,66 @@ NpcUtil = {
 		console.log("Num betw: "+min+ " - "+max);
 		console.log(randInt);
 		return npcInfo.extra[randInt];
+	},
+	listNpcActions: function(npcName, playerObj) {
+		// Todo: Refactor this better ;-;
+		// - So it doesn't alter vm.actions directly
+		var currNpc = Npc[npcName];
+		var npcQuests = currNpc.quests;
+		// Go through list of currNpc if it's not completed
+		if (npcQuests != undefined) {
+			for (var i = 0; i < npcQuests.length; i++) { 
+				console.log("Q: "+npcQuests[i]);
+				var currQuest = Quests[npcQuests[i]];
+				// If the quest isn't completed
+				if (playerObj.quests_completed.indexOf(npcQuests[i]) == -1) {
+					var stageType = "";
+					// Check if quest is in progress
+					if (playerObj.quests_active[npcQuests[i]] != undefined) {
+						// console.log("Quest in progress.")
+						stageType = "quest-progress";
+						var playerQuestStage = playerObj.quests_active[npcQuests[i]].stage;
+						if (playerQuestStage == undefined) {
+							console.log("Error: quest in progress but no stage saved");
+							break;								
+						}
+						var questNode = currQuest.stages[playerQuestStage];
+						// console.log(questNode);
+
+						// console.log("Adding to action list")
+						var newAction = {
+							name: npcQuests[i],
+							action: stageType,
+							stage: playerQuestStage,
+							label: "["+currQuest.questName+"] "+questNode.textLabel
+						}
+						vm.actions.push(newAction)
+					} else {
+						// console.log("Unstarted quest. Checking prereqs")
+						stageType = "quest-start";
+						// Check if you can start this quest
+						// Set to true and if anything fails you can't start
+						var passPrereqs = QuestsUtil.checkPrereqs(npcQuests[i], playerObj);
+						console.log("Prereqs pass state: "+passPrereqs);
+
+						// If it passes, add it to the list of actions
+						if (passPrereqs) {
+							console.log("Adding to action list")
+							var newAction = {
+								name: npcQuests[i],
+								action: 'quest-start',
+								stage: 0,
+								label: currQuest.startQuestText
+							}
+							vm.actions.push(newAction)
+						}
+						
+					}
+				} else {
+					console.log("Quest complete. Next.");
+				}
+			}
+		}
 	}
 }
 

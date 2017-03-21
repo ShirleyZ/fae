@@ -176,6 +176,8 @@ Screen = {
 			// Change screen elements
 			vm.mapInfo.name = destMapInfo.name;
 			vm.mapInfo.desc = destMapInfo.desc;
+			vm.mapInfo.nodes = "";
+			vm.mapInfo.npcs = [];
 			// Todo: create list of actions from current map
 			Game.listActions();
 		}
@@ -254,6 +256,34 @@ Game = {
 		// Todo: write this
 		return true;
 	},
+	checkPassConditions: function(reqList) {
+		var passCond = true;
+
+		for (var i = 0; i < reqList.length; i++) {
+			var cond = reqList[i];
+			
+			if (cond === true) {
+				// Let them pass, and ignore other checks
+			} else if (cond === false) {
+				passCond = false;
+			} else if (cond.type == "equipment") {
+				// Player needs to wear certain equipment
+				if (!Player.isEquipping(cond.item)) {
+					passCond = false;
+				}
+			} else if (cond.type == "item") {
+				// Todo: Player needs to have a certain item
+				passCond = false;
+			} else if (cond.type == "quest" && cond.state == "completed") {
+				if (playerObj.quests_completed.indexOf(cond.name) == -1) {
+					// console.log("Not completed");
+					passCond = false;
+				}
+			}
+
+		} // End for loop
+		return passCond;
+	},
 	checkValidMapMove: function(fromMap, toMap) {
 		// Returns true/false
 		var validity = false;
@@ -304,13 +334,12 @@ Game = {
 		console.log("Push evenets for list: "+listName);
 		console.log(vm.pageEvents)
 	},
-	doAction: function(qName, qAction, qStage, param1) {
-		console.log("=== "+qAction+" "+qName+" stage: "+qStage);
+	doAction: function(qName, qAction, param1, param2) {
+		console.log("=== "+qAction+" "+qName+" stage: "+param1);
+		console.log("Extra params 1:"+param1+" 2:"+param2);
 
 		// Getting infos
 		var playerObj = Player.getInfo();
-		var questNode = Quests[qName].stages[qStage];
-		console.log(questNode);
 
 		// Resetting screen
 		vm.questActions = [];
@@ -318,27 +347,32 @@ Game = {
 		
 		// Handling action types
 		if (qAction == "changeScreen") {
-			if (param1) {
-				Screen.changeScreen(param1);
+			console.log("yes this is change screen");
+			console.log(param2);
+			if (param2) {
+				Screen.changeScreen(param2);
 			}
-
+		} else if (qAction == "changeNpc") {
+			Screen.moveToNpc(qName);
 		// Regular quest progression
-		} else {
+		} else if (qAction == "quest-start" || qAction == "quest-progress") {
+			var questNode = Quests[qName].stages[param1];
+			console.log(questNode);
 			// Making changes to player data
 			// - Starting quest if they haven't already
-			if (qAction == "start") {
+			if (qAction == "quest-start") {
 				console.log("Starting quest")
 				playerObj.quests_active[qName] = {
-					stage: qStage
+					stage: param1
 				}
 				console.log(playerObj.quests_active[qName])
-			} else if (qAction == "progress") {
+			} else if (qAction == "quest-progress") {
 				console.log("Progressing");
-				playerObj.quests_active[qName].stage = qStage;
+				playerObj.quests_active[qName].stage = param1;
 			}
 
 			// Calculate stuff
-			var nextStage = QuestsUtil.checkPassConditions(qName, playerObj, qStage);
+			var nextStage = QuestsUtil.checkPassConditions(qName, playerObj, param1);
 
 			// - Calculating if player needs to get any items
 			var pQuestInfo = playerObj.quests_active[qName];
@@ -364,14 +398,14 @@ Game = {
 				newAction = {
 					name: qName,
 					action: questNode.textNodePass.action,
-					stage: qStage+1,
+					stage: param1+1,
 					label: questNode.textNodePass.label
 				}
 			} else {
 				newAction = {
 					name: qName,
 					action: questNode.textNodeNotPass.action,
-					stage: qStage,
+					stage: param1,
 					label: questNode.textNodeNotPass.label
 				}
 				if (questNode.textNodeNotPass.action == "changeScreen") {
@@ -395,70 +429,29 @@ Game = {
 			var currNpc = Npc[Game.currScene];
 			var playerObj = Player.getInfo();
 			var npcQuests = currNpc.quests;
-			// console.log(npcQuests);
-
-			// Go through list of currNpc if it's not completed
-			if (npcQuests != undefined) {
-				for (var i = 0; i < npcQuests.length; i++) { 
-					console.log("Q: "+npcQuests[i]);
-					var currQuest = Quests[npcQuests[i]];
-					// If the quest isn't completed
-					if (playerObj.quests_completed.indexOf(npcQuests[i]) == -1) {
-						var stageType = "";
-						// Check if quest is in progress
-						if (playerObj.quests_active[npcQuests[i]] != undefined) {
-							// console.log("Quest in progress.")
-							stageType = "progress";
-							var playerQuestStage = playerObj.quests_active[npcQuests[i]].stage;
-							if (playerQuestStage == undefined) {
-								console.log("Error: quest in progress but no stage saved");
-								break;								
-							}
-							var questNode = currQuest.stages[playerQuestStage];
-							// console.log(questNode);
-
-							// console.log("Adding to action list")
-							var newAction = {
-								name: npcQuests[i],
-								action: stageType,
-								stage: playerQuestStage,
-								label: "["+currQuest.questName+"] "+questNode.textLabel
-							}
-							vm.actions.push(newAction)
-						} else {
-							// console.log("Unstarted quest. Checking prereqs")
-							stageType = "start";
-							// Check if you can start this quest
-							// Set to true and if anything fails you can't start
-							var passPrereqs = QuestsUtil.checkPrereqs(npcQuests[i], playerObj);
-							console.log("Prereqs pass state: "+passPrereqs);
-
-							// If it passes, add it to the list of actions
-							if (passPrereqs) {
-								console.log("Adding to action list")
-								var newAction = {
-									name: npcQuests[i],
-									action: 'start',
-									stage: 0,
-									label: currQuest.startQuestText
-								}
-								vm.actions.push(newAction)
-							}
-							
-						}
-					} else {
-						console.log("Quest complete. Next.");
-					}
-				}
-			}
+			
+			NpcUtil.listNpcActions(Game.currScene, playerObj);
 			
 			console.log("Actions");
 			console.log(vm.actions);
+
+
 		} else if (vm.mainInfo.type == "map" && Player.getCurrMapLoc() != undefined) {
+			console.log("Listing actions for map:"+Player.getCurrMapLoc());
 			// Check through npcs
 			var currMapInfo = GameMap[Player.getCurrMapLoc()];
+			console.log(currMapInfo);
 			if (currMapInfo != undefined && currMapInfo.npcs.length > 0) {
-
+				for (var i = 0; i < currMapInfo.npcs.length; i++) {
+					var currNpc = currMapInfo.npcs[i];
+					console.log(currNpc);
+					if (!Game.checkPassConditions(currNpc.reqs)) {
+						console.log("Npc reqs for "+currNpc.name+" not met");
+					} else if (Game.checkPassConditions(currNpc.reqs)) {
+						console.log("Checks pass");
+						ActionUtil.addMoveToNpc(currNpc.name, vm.mapInfo.npcs);
+					}
+				}
 			}
 			// Check through map nodes
 
