@@ -112,8 +112,16 @@ body {
 }
 
 
-#area-info {
+#area-info, #main-textarea {
 	float: left;
+}
+
+#area-info {
+	width: 25%;
+}
+
+#main-textarea {
+	width: 70%;
 }
 
 #area-info > p {
@@ -143,4 +151,14 @@ body {
 	border: 1px solid white;
 	margin: 10px auto;
 	margin-top: 0;
+}
+
+#navbar ul.links {
+	list-style: none;
+	padding: 0;
+}
+
+#navbar ul.links li {
+	float: left;
+	margin: 5px;
 }

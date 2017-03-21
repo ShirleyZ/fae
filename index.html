@@ -7,14 +7,18 @@
 <body>
 <div id="wrapper">
 	<div id="navbar">
-		<ul>
+		<ul class="links">
+			<li>
+				<button onclick="vm.moveToNpc('teak')">Teak</button>
+			</li>
 			<li>
 				<button onclick="vm.changeScreen('inventory')">inventory</button> 
 			</li>
 			<li>
-				<button onclick="vm.changeScreen('map')">map</button> 
+				<button onclick="vm.moveToMap()">map</button> 
 			</li>
 		</ul>
+		<br clear="both">
 	</div>
 	<div id="sect-stats">
 		<ul>
@@ -41,19 +45,29 @@
 		</ul>
 	</div>
 	<div id="sect-main">
+		<div id="area-info" 
+				 class="portrait"
+				 v-if="mainInfo.type == 'npc'">
+			<img src="" />
+			<p class="style-caption">{{ mainInfo.imgCaption }}</p>
+		</div>
 		<div id="main-textarea">
-			<div id="area-info" 
-					 class="portrait"
-					 v-if="mainInfo.type == 'npc'">
-				<img src="" />
-				<p class="style-caption">{{ mainInfo.imgCaption }}</p>
-			</div>
 			<div id="main-text">
-				<p v-if="mainInfo.type=='npc'" class="style-quote" id="greeting"> {{ mainInfo.greeting }} </p>
-				<p>{{ mainInfo.mainDesc }}</p>
+
+				<div id="npc-info" v-if="mainInfo.type=='npc'">
+					<p v-if="mainInfo.type=='npc'" class="style-quote" id="greeting"> {{ mainInfo.greeting }} </p>
+					<p>{{ mainInfo.mainDesc }}</p>
+				</div>
+				
+				<div id="map-info" v-if="mainInfo.type=='map'">
+					<p>{{ mapInfo.name }}</p>
+					<p>{{ mapInfo.desc }}</p>
+					<p></p>
+				</div>
 
 				<div class="page-events" v-if="(pageEvents) && (pageEvents.length != 0)">
 					<ul>
+						<!-- <li v-for="event in pageEvents" v-html="event.label"></li> -->
 						<li v-for="event in pageEvents">{{event.label}}</li>
 					</ul>
 				</div>
@@ -104,6 +118,18 @@
 							</li>
 						</ul>
 					</div>
+				</div> <!-- End Inventory Tab -->
+				<div>
+					<p>
+							You see 
+							<span style="color: #da464a;">an apple tree</span>, 
+							<span style="color: #76c9e4;">a small pond</span> and 
+							<span style="color: #76c9e4;">a slow-moving river</span> nearby.
+					</p>
+					<ul>
+						<li>[NPC] Tree Guardian Teak</li>
+						<li>[NPC] Tree Guardian Willow</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -138,6 +164,7 @@
 	<!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
 	<script src="vueStuff.js"></script>
 	<script src="items.js"></script>
+	<script src="map.js"></script>
 	<script src="npc.js"></script>
 	<script src="player.js"></script>
 	<script src="quests.js"></script>

@@ -11,6 +11,7 @@ Player = {
 		level: 1,
 		totalXp: 200,
 		currXp: 0,
+		currMap: "forest-1",
 		statcharisma: 5,
 		stat_charm: 5,
 		stat_deception: 5,
@@ -123,5 +124,13 @@ Player = {
 		}
 		
 		return successfulEquip;
+	},
+	moveToMap: function(mapName) {
+		console.log("Received: "+mapName);
+		vm.playerInfo.currMap = mapName;
+	},
+	getCurrMapLoc: function() {
+		return vm.playerInfo.currMap;
 	}
+
 }

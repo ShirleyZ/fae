@@ -19,6 +19,17 @@ var vm = new Vue({
 			name: "Flippity Jack the Pixie",
 			level: 1
 		},
+		npcInfo: {
+			imgCaption: '',
+			quote: '',
+			greeting: '',
+			dialogue: ''
+		},
+		mapInfo: {
+			name: '',
+			desc: '',
+			quote: ''
+		},
 		mainInfo: {
 			type: 'npc',
 			imgSrc: '',

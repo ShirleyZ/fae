@@ -1,5 +1,15 @@
 // **** CHARACTERS ****
 
+NpcUtil = {
+	getNpcQuote: function(toNpc) {
+		var npcInfo = Npc[toNpc];
+		var max = npcInfo.extra.length;
+		var min = 0;
+		var randInt = Math.random() * (max - min) + min;
+		return npcInfo.extra[randInt];
+	}
+}
+
 Npc = {
 	"pix": {
 		name: "Pix the Troublemaker",
