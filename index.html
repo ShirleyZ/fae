@@ -57,8 +57,19 @@
 				<div id="map-info" v-if="mainInfo.type=='map'">
 					<p>{{ mapInfo.name }}</p>
 					<p>{{ mapInfo.desc }}</p>
-					<p v-html="mapInfo.nodes"></p>
-					<ul>
+					<!-- <p v-html="mapInfo.nodes"></p> -->
+					<p>
+						You see
+						<span v-for="(node, index) in mapInfo.nodes">
+							<a v-on:click="doAction(node.name, node.action)">
+								 <span v-if="index != 0">, </span>
+								 <span v-if="index == mapInfo.nodes.length-1"> and </span>
+								 <span v-bind:class="node.color">{{node.label}}</span>
+							</a>
+						</span>
+						nearby.
+					</p>
+					<ul class="list-actions">
 						<li v-for="npcAct in mapInfo.npcs">
 							<a v-on:click="doAction(npcAct.name, npcAct.action)">{{npcAct.label}}</a>
 						</li>
@@ -87,14 +98,14 @@
 
 				</div>
 				<div id="tab-quest" v-if="displayOptions.values.quest">
-					<ul>
+					<ul class="list-actions">
 						<li v-for="qAct in questActions">
 								<a class="page-action" v-on:click="doAction(qAct.name, qAct.action, qAct.stage, qAct.param1)">{{qAct.label}}</a>
 						</li>
 					</ul>
 				</div>
 				<div id="tab-chat" v-if="displayOptions.values.chat">
-					<ul>
+					<ul class="list-actions">
 						<li v-for="act in actions"><a v-on:click="doAction(act.name, act.action, act.stage)">{{act.label}}</a></li>
 					</ul>
 				</div>
@@ -131,7 +142,7 @@
 							<span style="color: #76c9e4;">a small pond</span> and 
 							<span style="color: #76c9e4;">a slow-moving river</span> nearby.
 					</p>
-					<ul>
+					<ul class="list-actions">
 						<li>[NPC] Tree Guardian Teak</li>
 						<li>[NPC] Tree Guardian Willow</li>
 					</ul>

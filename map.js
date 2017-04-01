@@ -27,7 +27,20 @@
  				reqs: [false]
  			}
 		],
-		nodes: ["grove-apple", "river-small", "pond-small"],
+		nodes: [
+			{
+				name: "grove-apple",
+				reqs: []
+			}, 
+			{
+				name: "river-small",
+				reqs: []
+			}, 
+			{
+				name: "pond-small",
+				reqs: []
+			}
+		],
 		exits: ["garden-1"],
 		reqs: []
  	},
@@ -56,15 +69,20 @@
 
  Nodes = {
  	"grove-apple": {
-
+ 		name: "a grove of apple trees",
+ 		labelColor: "color-apple"
  	},
  	"river-small": {
-
+ 		name: "a small stream",
+ 		labelColor: "color-water"
  	},
  	"pond-small": {
-
+ 		name: "a small pond",
+ 		labelColor: "color-water"
  	},
  	"garden-mix-1": {
+ 		name: "a grove of apple trees",
+ 		labelColor: ""
 
  	}
  }

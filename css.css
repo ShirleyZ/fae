@@ -34,6 +34,10 @@ button {
 	margin-top: 0;
 }
 
+.style-clickable {
+	cursor: pointer;
+}
+
 .page-events ul {
 	list-style: none;
 }
@@ -43,6 +47,19 @@ button {
 	margin: 5px;
 	border: 1px solid white;
 }
+
+.list-actions li {
+	cursor: pointer;
+}
+
+.color-apple {
+	color: #da464a;
+}
+
+.color-water {
+	color: #76c9e4;
+}
+
 
 /* Specific */
 

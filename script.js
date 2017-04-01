@@ -176,7 +176,7 @@ Screen = {
 			// Change screen elements
 			vm.mapInfo.name = destMapInfo.name;
 			vm.mapInfo.desc = destMapInfo.desc;
-			vm.mapInfo.nodes = "";
+			vm.mapInfo.nodes = [];
 			vm.mapInfo.npcs = [];
 			// Todo: create list of actions from current map
 			Game.listActions();
@@ -440,20 +440,35 @@ Game = {
 			console.log("Listing actions for map:"+Player.getCurrMapLoc());
 			// Check through npcs
 			var currMapInfo = GameMap[Player.getCurrMapLoc()];
-			console.log(currMapInfo);
+			// console.log(currMapInfo);
 			if (currMapInfo != undefined && currMapInfo.npcs.length > 0) {
 				for (var i = 0; i < currMapInfo.npcs.length; i++) {
 					var currNpc = currMapInfo.npcs[i];
-					console.log(currNpc);
+					// console.log(currNpc);
 					if (!Game.checkPassConditions(currNpc.reqs)) {
-						console.log("Npc reqs for "+currNpc.name+" not met");
+						// console.log("Npc reqs for "+currNpc.name+" not met");
 					} else if (Game.checkPassConditions(currNpc.reqs)) {
-						console.log("Checks pass");
+						// console.log("Checks pass");
 						ActionUtil.addMoveToNpc(currNpc.name, vm.mapInfo.npcs);
 					}
 				}
 			}
 			// Check through map nodes
+			if (currMapInfo != undefined && currMapInfo.nodes.length > 0) {
+				// vm.mapInfo.nodes = "You see ";
+				for (i = 0; i < currMapInfo.nodes.length; i++) {
+					var currNode = currMapInfo.nodes[i];
+					// console.log(currNode);
+					if (!Game.checkPassConditions(currNode.reqs)) {
+						// console.log("Node reqs for "+currNode.name+" not met");
+					} else if (Game.checkPassConditions(currNode.reqs)) {
+						// console.log("Checks pass");
+						ActionUtil.addMoveToNode(currNode.name, vm.mapInfo.nodes);
+					}
+				}
+				// vm.mapInfo.nodes += " nearby.";
+				console.log(vm.mapInfo.nodes);
+			}
 
 			// Check through exits
 		}
