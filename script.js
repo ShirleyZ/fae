@@ -63,13 +63,16 @@ Screen = {
 		}
 	},
 	changeScreen: function(screenType, sceneName) {
-		console.log("=== Main: Changing screen to "+screenType)
+		console.log("=== Main: Changing screen to "+screenType);
+		console.log("SceneName: "+sceneName);
 		vm.mainInfo.greeting = "";
 		vm.mainInfo.mainDesc = "";
 		vm.mainInfo.type = screenType;
 		vm.displayOptions.show(screenType);
 		vm.actions = [];
 		vm.pageEvents = [];
+		vm.mapInfo.nodes = [];
+		vm.mapInfo.npcs = [];
 
 		if (screenType == "map") {
 			// - Deals with moving map to map
@@ -77,9 +80,6 @@ Screen = {
 
 			// Grab relevant infos
 			var currMapName = Player.getCurrMapLoc();
-			if (currMapName == undefined) {
-				currMapName = "lost";
-			}
 			var currMapInfo = GameMap[currMapName];
 
 			var destination = null;
@@ -107,7 +107,25 @@ Screen = {
 
 
 		} else if (screenType == "node") {
+			console.log("Hello nodo");
 			// - Moving from map to node
+			// Grab relevant infos
+			var currMapName = Player.getCurrMapLoc();
+			var nodeInfo = Nodes[sceneName];
+			console.log("Player at: "+currMapName);
+			console.log("Node is:");
+			console.log(nodeInfo);
+
+			// Check if destination is a valid exit
+			if (!Game.checkValidNodeMove(currMapName, sceneName)) {
+				console.log("Not valid move");
+			} else {
+				// Player location doesn't need to be updated
+
+				// Change screen elements
+				vm.mapInfo.name = nodeInfo.name;
+				vm.mapInfo.desc = nodeInfo.desc;
+			}
 
 		} else if (screenType == "npc") {
 			// - Moving from map to npc
@@ -299,6 +317,17 @@ Game = {
 
 		return validity;
 	},
+	checkValidNodeMove: function(fromMap, toNode) {
+		var validity = false;
+		var currMapInfo = GameMap[fromMap];
+
+		for (var i = 0; i < currMapInfo.nodes.length; i++) {
+			if (currMapInfo.nodes[i].name == toNode) {
+				validity = true;
+			}
+		}
+		return validity;
+	},
 	giveItemsFromList: function(list, listName, pQuestInfo) {
 		var gettin = "";
 		for (var j = 0; j < list.length; j++) {
@@ -352,6 +381,10 @@ Game = {
 			if (param2) {
 				Screen.changeScreen(param2);
 			}
+		} else if (qAction == "changeMap") {
+			Screen.changeScreen("map", param2);
+		} else if (qAction == "changeNode") {
+			Screen.changeScreen("node", qName);
 		} else if (qAction == "changeNpc") {
 			Screen.moveToNpc(qName);
 		// Regular quest progression
@@ -410,6 +443,7 @@ Game = {
 				}
 				if (questNode.textNodeNotPass.action == "changeScreen") {
 					newAction.param1 = questNode.textNodeNotPass.target;
+					newAction.qName = questNode.textNodeNotPass.target;
 				}
 			}
 			vm.questActions.push(newAction)

@@ -70,19 +70,22 @@
  Nodes = {
  	"grove-apple": {
  		name: "a grove of apple trees",
+ 		desc: "The trees are ripe with fruit and just ready to be picked. The sound of birdsong twitters through the air.",
  		labelColor: "color-apple"
  	},
  	"river-small": {
  		name: "a small stream",
+ 		desc: "bub",
  		labelColor: "color-water"
  	},
  	"pond-small": {
  		name: "a small pond",
+ 		desc: "The water is so clear you can see straight to the bottom",
  		labelColor: "color-water"
  	},
  	"garden-mix-1": {
- 		name: "a grove of apple trees",
- 		labelColor: ""
-
+ 		name: "a small garden",
+ 		desc: "Violets, pansies, daises.",
+ 		labelColor: "color-flower-1"
  	}
  }

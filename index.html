@@ -53,7 +53,17 @@
 		</div>
 		<div id="main-textarea">
 			<div id="main-text">
+				<div id="node-info" v-if="mainInfo.type=='node'">
+					<p>{{ mapInfo.name }}</p>
+					<p>{{ mapInfo.desc }}</p>
 
+					<p>You can:</p>
+					<ul>
+						<li>Pick apples</li>
+						<li>Rest</li>
+						<li>Catch crickets</li>
+					</ul>
+				</div>
 				<div id="map-info" v-if="mainInfo.type=='map'">
 					<p>{{ mapInfo.name }}</p>
 					<p>{{ mapInfo.desc }}</p>

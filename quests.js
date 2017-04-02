@@ -130,7 +130,8 @@ Quests = {
 				},
 				textNodeNotPass: {
 					label: "You can find apples in the apple grove.",
-					action: "none"
+					action: "changeMap",
+					target: "forest-1"
 				},
 				passRewards: [
 					{

@@ -130,6 +130,9 @@ Player = {
 		vm.playerInfo.currMap = mapName;
 	},
 	getCurrMapLoc: function() {
+		if (vm.playerInfo.currMap == undefined) {
+			return "lost";
+		}
 		return vm.playerInfo.currMap;
 	}
 

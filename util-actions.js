@@ -14,7 +14,7 @@ ActionUtil = {
 		}
 		var newAction = {
 			name: toNode,
-			action: "changeScreen",
+			action: "changeNode",
 			label: nodeInfo.name,
 			color: nodeInfo.labelColor
 		}
